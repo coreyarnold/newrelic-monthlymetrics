@@ -1,0 +1,19 @@
+{
+	"team": [
+		{
+			"name": "Browser",
+			"team-slug": "browser-agent",
+			"repos": ["newrelic-browser-agent", "nr-querypack"]        
+		},
+		{
+			"name": "Node",
+			"team-slug": "node-js-agent",
+			"repos": ["node-newrelic", "node-native-metrics", "node-test-utilities", "node-newrelic-koa", "node-newrelic-superagent", "node-newrelic-mysql", "node-newrelic-aws-sdk", "node-newrelic-fastify", "node-newrelic-oracledb"]
+		},
+		{
+			"name": "Python",
+			"team-slug": "python",
+			"repos": ["newrelic-python-agent", "openshift-python-with-newrelic", "newrelic-telemetry-sdk-python", "newrelic-opencensus-exporter-python", "python-agent-extension", "newrelic-airflow-plugin", "demo-pythontron"]
+		}
+	]
+}
