@@ -52,9 +52,10 @@ def getBugCounts(repos):
 		openBugCount += len(r.json())
 	print("Open Bugs: ", openBugCount)
 
-def getExternalPRCounts(repos,teammembers):
+def getExternalPRCounts(repos,team):
 	print("Gathering Open External PR Counts")
 	prcount = 0
+	teammembers = getTeamMembers(team)
 	for repo in repos:
 
 		query_url = f"https://api.github.com/repos/newrelic/{repo}/pulls"
@@ -77,5 +78,5 @@ teams = readConfigJson()
 for team in teams['team']:
 	print(team['name'].upper())
 	getBugCounts(team['repos'])
-	getExternalPRCounts(team['repos'], getTeamMembers(team['team-slug']))
+	getExternalPRCounts(team['repos'], team['team-slug'])
 	print()	
