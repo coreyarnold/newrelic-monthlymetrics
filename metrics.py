@@ -16,9 +16,6 @@ def readConfigJson():
 	f.close()
 	return data
 	
-def getReposFromProject():
-	return node
-
 def getTeamMembers(team_slug):
 	memberlist = []
 	query_url = "https://api.github.com/orgs/newrelic/teams"
