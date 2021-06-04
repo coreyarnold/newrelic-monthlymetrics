@@ -14,6 +14,17 @@
 			"name": "Python",
 			"team-slug": "python",
 			"repos": ["newrelic-python-agent", "openshift-python-with-newrelic", "newrelic-telemetry-sdk-python", "newrelic-opencensus-exporter-python", "python-agent-extension", "newrelic-airflow-plugin", "demo-pythontron"]
+		},
+		{
+			"name": "Ruby",
+			"team-slug": "Ruby-agent",
+			"repos": ["newrelic-ruby-agent"]
+		},
+		{
+			"name": ".Net",
+			"team-slug": "dotnet",
+			"repos": ["newrelic-dotnet-agent"]
 		}
+
 	]
 }
