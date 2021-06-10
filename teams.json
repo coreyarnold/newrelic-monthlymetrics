@@ -24,6 +24,11 @@
 			"name": ".Net",
 			"team-slug": "dotnet",
 			"repos": ["newrelic-dotnet-agent"]
+		},
+		{
+			"name": "Java",
+			"team-slug": "java-agent",
+			"repos": ["java-agent-api", "java-aws-lambda", "newrelic-telemetry-sdk-java", "micrometer-registry-newrelic", "dropwizard-metrics-newrelic", "java-log-extensions", "opentelemetry-exporter-java", "newrelic-tracer-java", "kamon-newrelic-reporter", "newrelic-jfr-core", "newrelic-gradle-verify-instrumentation", "newrelic-gradle-compatibility-doc-plugin", "newrelic-module-util-java", "newrelic-infinite-tracing-protobuf-java", "newrelic-java-agent", "newrelic-lambda-tracer-java", "newrelic-jfr-reporter", "nri-introspector-java", "newrelic-opentelemetry-integration-java", "newrelic-java-examples"]
 		}
 
 	]
