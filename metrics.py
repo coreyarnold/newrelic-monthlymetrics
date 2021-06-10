@@ -69,7 +69,7 @@ def getExternalPRCounts(repos,team):
 		prs = r.json()
 		for pr in prs:
 			if pr['user']['login'] not in teammembers :
-				print(' found external pr from:', pr['user']['login'])
+				print(' found external pr in %s from: %s' % (repo, pr['user']['login']))
 				prcount += 1
 			else:
 				print(' found pr for a team member: ', pr['user']['login'])
@@ -104,10 +104,10 @@ def getReleaseNumbers(repos):
 		for release in releases:
 			releasepublishedat = datetime.strptime(release['published_at'], '%Y-%m-%dT%H:%M:%SZ')
 			if(releasepublishedat > lastmonth[0] and releasepublishedat < lastmonth[1]):
-				print("Release last month in ", repo)
+				print("Release %s last month in %s" % (release.get("name"),repo))
 				reporeleasecount_lastmonth += 1
 			elif(releasepublishedat > thismonth[0] and releasepublishedat < thismonth[1]):
-				print("Release this month in ", repo)
+				print("Release %s this month in %s" % (release.get("name"),repo))
 				reporeleasecount_thismonth += 1
 
 		lastmonthreleasecount += reporeleasecount_lastmonth
