@@ -8,7 +8,7 @@
 		{
 			"name": "Node",
 			"team-slug": "node-js-agent",
-			"repos": ["node-newrelic", "node-native-metrics", "node-test-utilities", "node-newrelic-koa", "node-newrelic-superagent", "node-newrelic-mysql", "node-newrelic-aws-sdk", "node-newrelic-fastify", "node-newrelic-oracledb"]
+			"repos": ["node-newrelic", "node-native-metrics", "node-test-utilities", "node-newrelic-koa", "node-newrelic-superagent", "node-newrelic-mysql", "node-newrelic-aws-sdk", "newrelic-winston-logenricher-node", "newrelic-telemetry-sdk-node", "newrelic-node-apollo-server-plugin"]
 		},
 		{
 			"name": "Python",
@@ -28,6 +28,7 @@
 		{
 			"name": "Java",
 			"team-slug": "java-agent",
+			"project-board": "Java Engineering Board",
 			"repos": ["java-agent-api", "java-aws-lambda", "newrelic-telemetry-sdk-java", "micrometer-registry-newrelic", "dropwizard-metrics-newrelic", "java-log-extensions", "opentelemetry-exporter-java", "newrelic-tracer-java", "kamon-newrelic-reporter", "newrelic-jfr-core", "newrelic-gradle-verify-instrumentation", "newrelic-gradle-compatibility-doc-plugin", "newrelic-module-util-java", "newrelic-infinite-tracing-protobuf-java", "newrelic-java-agent", "newrelic-lambda-tracer-java", "newrelic-jfr-reporter", "nri-introspector-java", "newrelic-opentelemetry-integration-java", "newrelic-java-examples"]
 		}
 
