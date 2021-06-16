@@ -50,7 +50,20 @@ def getBugCounts(repos):
 		}
 		headers = {'Authorization': f'token {token}'}
 		r = requests.get(query_url, headers=headers, params=params)
-		openBugCount += len(r.json())
+		bugs = r.json()
+		if (len(bugs) > 0):
+			for b in bugs:
+				labels = b.get('labels')
+				bug_check = False
+				triage_check = False
+				for label in labels:
+					if label.get('name') == 'needs-triage':
+						triage_check = True
+					if label.get('name') == 'bug':
+						bug_check = True
+				if (triage_check and bug_check):
+					print(' found unreviewed bug %s in %s' % (b.get('number'), repo))
+					openBugCount += 1
 	print("Open Bugs: ", openBugCount)
 
 def getExternalPRCounts(repos,team):
@@ -71,8 +84,8 @@ def getExternalPRCounts(repos,team):
 			if pr['user']['login'] not in teammembers :
 				print(' found external pr in %s from: %s' % (repo, pr['user']['login']))
 				prcount += 1
-			else:
-				print(' found pr for a team member: ', pr['user']['login'])
+#			else:
+#				print(' found pr for a team member: ', pr['user']['login'])
 	print("Open External PRs: ", prcount)
 
 def get_month_day_range(date):
@@ -81,6 +94,7 @@ def get_month_day_range(date):
 	return first_day, last_day
 
 def getReleaseNumbers(repos):
+	print('Gathering Release Counts')
 	#gets the number of releases across all team repos for the current and previous month
 	#GET /repos/{owner}/{repo}/releases
 	lastmonthreleasecount = 0
@@ -104,10 +118,10 @@ def getReleaseNumbers(repos):
 		for release in releases:
 			releasepublishedat = datetime.strptime(release['published_at'], '%Y-%m-%dT%H:%M:%SZ')
 			if(releasepublishedat > lastmonth[0] and releasepublishedat < lastmonth[1]):
-				print("Release %s last month in %s" % (release.get("name"),repo))
+				print(" Release %s last month in %s" % (release.get("name"),repo))
 				reporeleasecount_lastmonth += 1
 			elif(releasepublishedat > thismonth[0] and releasepublishedat < thismonth[1]):
-				print("Release %s this month in %s" % (release.get("name"),repo))
+				print(" Release %s this month in %s" % (release.get("name"),repo))
 				reporeleasecount_thismonth += 1
 
 		lastmonthreleasecount += reporeleasecount_lastmonth
