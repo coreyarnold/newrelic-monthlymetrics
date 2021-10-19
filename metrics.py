@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import operator
 import requests
 import os
 import json
@@ -115,13 +116,15 @@ def getReleaseNumbers(repos):
 		#this has all pull requests. need to filter out ones where the author is on the team
 		releases = r.json()
 
+		releases.sort(key=operator.itemgetter('published_at'),reverse=False)
+
 		for release in releases:
 			releasepublishedat = datetime.strptime(release['published_at'], '%Y-%m-%dT%H:%M:%SZ')
 			if(releasepublishedat > lastmonth[0] and releasepublishedat < lastmonth[1]):
-				print(" Release %s last month in %s" % (release.get("name"),repo))
+				print(" Release %s last month (%s) in %s" % (release.get("name"), releasepublishedat, repo))
 				reporeleasecount_lastmonth += 1
 			elif(releasepublishedat > thismonth[0] and releasepublishedat < thismonth[1]):
-				print(" Release %s this month in %s" % (release.get("name"),repo))
+				print(" Release %s this month (%s) in %s" % (release.get("name"), releasepublishedat, repo))
 				reporeleasecount_thismonth += 1
 
 		lastmonthreleasecount += reporeleasecount_lastmonth
