@@ -115,6 +115,10 @@ def getReleaseNumbers(repos):
 		r = requests.get(query_url, headers=headers, params=params)
 		#this has all pull requests. need to filter out ones where the author is on the team
 		releases = r.json()
+		#Remove any unpublished releases since can't sort them when 'published_at' is None
+		for release in releases:
+			if release['published_at'] == None:
+				releases.remove(release)
 
 		releases.sort(key=operator.itemgetter('published_at'),reverse=False)
 
