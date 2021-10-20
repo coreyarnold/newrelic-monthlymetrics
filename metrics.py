@@ -39,7 +39,8 @@ def getTeamMembers(team_slug):
 
 	return memberlist
 
-def getBugCounts(repos):
+def getUnreviewedBugCounts(team):
+	repos = team['repos']
 	openBugCount = 0
 	print("Gathering Unreviewed Bug Counts")
 	for repo in repos:
@@ -81,9 +82,10 @@ def getExternalPRCounts(repos,team):
 		r = requests.get(query_url, headers=headers, params=params)
 		#this has all pull requests. need to filter out ones where the author is on the team
 		prs = r.json()
+		prs.sort(key=operator.itemgetter('created_at'),reverse=False)
 		for pr in prs:
 			if pr['user']['login'] not in teammembers :
-				print(' found external pr in %s from: %s' % (repo, pr['user']['login']))
+				print(' found external pr in %s from: %s opened %s' % (repo, pr['user']['login'], datetime.strptime(pr['created_at'], '%Y-%m-%dT%H:%M:%SZ')))
 				prcount += 1
 #			else:
 #				print(' found pr for a team member: ', pr['user']['login'])
@@ -136,11 +138,34 @@ def getReleaseNumbers(repos):
 	print("Total Release Count Last Month: ", lastmonthreleasecount)
 	print("Total Release Count This Month: ", thismonthreleasecount)
 	
+def getOpenBugs(team):
+	repos = team['repos']
+	openBugCount = 0
+	for repo in repos:
+		query_url = f"https://api.github.com/repos/newrelic/{repo}/issues"
+		params = {
+			"status": "open",
+			"labels": "bug",
+		}
+		headers = {'Authorization': f'token {token}'}
+		r = requests.get(query_url, headers=headers, params=params)
+		bugs = r.json()
+		if (len(bugs) > 0):
+			openBugCount += len(bugs)
+		else:
+			openBugCount += 0
+	return openBugCount
+
 
 teams = readConfigJson()
+aggregatebugs = 0
+for team in teams['team']:
+	aggregatebugs += getOpenBugs(team)
+print('Total Open Bugs: ',aggregatebugs)
+
 for team in teams['team']:
 	print(team['name'].upper())
-	getBugCounts(team['repos'])
+	getUnreviewedBugCounts(team)
 	getExternalPRCounts(team['repos'], team['team-slug'])
 	getReleaseNumbers(team['repos'])
 	print()	
