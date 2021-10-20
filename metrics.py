@@ -22,7 +22,7 @@ def readConfigJson():
 	f.close()
 	return data
 	
-def getTeamMembers(team_slug):
+def getTeamMembers(team):
 	memberlist = []
 	query_url = "https://api.github.com/orgs/newrelic/teams"
 	params = {
@@ -31,7 +31,7 @@ def getTeamMembers(team_slug):
 	headers = {'Authorization': f'token {token}'}
 	r = requests.get(query_url, headers=headers, params=params)
 	for i in r.json():
-		if i['slug'] == team_slug:
+		if i['slug'] == team['team-slug']:
 			query_url = i['members_url'].replace('{/member}','')
 			teammembers = requests.get(query_url, headers=headers, params=params)
 			for m in teammembers.json():
@@ -68,7 +68,8 @@ def getUnreviewedBugCounts(team):
 					openBugCount += 1
 	print("Open Bugs: ", openBugCount)
 
-def getOpenExternalPRCounts(repos,team):
+def getOpenExternalPRCounts(team):
+	repos = team['repos']
 	print("Gathering Open External PR Counts")
 	prcount = 0
 	teammembers = getTeamMembers(team)
