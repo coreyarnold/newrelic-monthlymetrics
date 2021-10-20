@@ -68,7 +68,7 @@ def getUnreviewedBugCounts(team):
 					openBugCount += 1
 	print("Open Bugs: ", openBugCount)
 
-def getExternalPRCounts(repos,team):
+def getOpenExternalPRCounts(repos,team):
 	print("Gathering Open External PR Counts")
 	prcount = 0
 	teammembers = getTeamMembers(team)
@@ -166,6 +166,6 @@ print('Total Open Bugs: ',aggregatebugs)
 for team in teams['team']:
 	print(team['name'].upper())
 	getUnreviewedBugCounts(team)
-	getExternalPRCounts(team['repos'], team['team-slug'])
+	getOpenExternalPRCounts(team['repos'], team['team-slug'])
 	getReleaseNumbers(team['repos'])
 	print()	
