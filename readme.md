@@ -12,3 +12,7 @@ This script makes the following assumptions
 
 1. You're using GitHub teams to indicate who is a team member and who is an external contributor.
 2. New bugs get the label `needs-triaged` to indicate the bug has not yet been reviewed by the team. Once the review has occurred, the label should be removed.
+
+Requirements
+ * `pip3 install python-dateutil`
+ * `pip3 install PyGithub`
