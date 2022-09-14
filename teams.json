@@ -3,34 +3,57 @@
 		{
 			"name": "Browser",
 			"team-slug": "browser-agent",
-			"repos": ["newrelic-browser-agent", "nr-querypack"]        
+			"repos": ["newrelic-browser-agent", "nr-querypack"],
+			"agentrepo": ["newrelic-browser-agent"]
 		},
 		{
 			"name": "Node",
 			"team-slug": "node-js-agent",
-			"repos": ["node-newrelic", "node-native-metrics", "node-test-utilities", "node-newrelic-koa", "node-newrelic-superagent", "node-newrelic-mysql", "node-newrelic-aws-sdk", "newrelic-winston-logenricher-node", "newrelic-telemetry-sdk-node", "newrelic-node-apollo-server-plugin"]
+			"repos": ["node-newrelic", "node-native-metrics", "node-test-utilities", "node-newrelic-koa", "node-newrelic-superagent", "node-newrelic-mysql", "node-newrelic-aws-sdk", "newrelic-winston-logenricher-node", "newrelic-telemetry-sdk-node", "newrelic-node-apollo-server-plugin", "newrelic-node-examples", "newrelic-telemetry-sdk-specs", "newrelic-node-nextjs", "newrelic-node-log-extensions", "newrelic-lambda-layers", "newrelic-introspector-node"],
+			"agentrepo": ["node-newrelic"]
 		},
 		{
 			"name": "Python",
 			"team-slug": "python",
-			"repos": ["newrelic-python-agent", "openshift-python-with-newrelic", "newrelic-telemetry-sdk-python", "newrelic-opencensus-exporter-python", "python-agent-extension", "newrelic-airflow-plugin", "demo-pythontron"]
+			"repos": ["newrelic-python-agent", "openshift-python-with-newrelic", "newrelic-telemetry-sdk-python", "newrelic-opencensus-exporter-python", "python-agent-extension", "newrelic-airflow-plugin", "demo-pythontron","newrelic-lambda-cli","newrelic-lambda-layers"],
+			"agentrepo": ["newrelic-python-agent"]
 		},
 		{
 			"name": "Ruby",
 			"team-slug": "ruby-agent",
-			"repos": ["newrelic-ruby-agent"]
+			"repos": ["newrelic-ruby-agent"],
+			"agentrepo": ["newrelic-ruby-agent"]
 		},
 		{
 			"name": ".Net",
 			"team-slug": "dotnet",
-			"repos": ["newrelic-dotnet-agent"]
+			"repos": ["newrelic-dotnet-agent","newrelic-logenricher-dotnet"],
+			"agentrepo": ["newrelic-dotnet-agent"]
 		},
 		{
 			"name": "Java",
 			"team-slug": "java-agent",
 			"project-board": "Java Engineering Board",
-			"repos": ["java-agent-api", "java-aws-lambda", "newrelic-telemetry-sdk-java", "micrometer-registry-newrelic", "dropwizard-metrics-newrelic", "java-log-extensions", "opentelemetry-exporter-java", "newrelic-tracer-java", "kamon-newrelic-reporter", "newrelic-jfr-core", "newrelic-gradle-verify-instrumentation", "newrelic-gradle-compatibility-doc-plugin", "newrelic-module-util-java", "newrelic-infinite-tracing-protobuf-java", "newrelic-java-agent", "newrelic-lambda-tracer-java", "newrelic-jfr-reporter", "nri-introspector-java", "newrelic-opentelemetry-integration-java", "newrelic-java-examples"]
+			"repos": ["dropwizard-metrics-newrelic","java-actions","java-agent-api","java-agent-integration-tests","java-ait-cache-1","java-ait-cache-2","java-ait-cache-3","java-ait-cache-4","java-ait-cache-5","java-ait-workspace","java-aws-lambda","java-instrumentation-toolkit","java-log-extensions","micrometer-registry-newrelic","newrelic-exporter-specs","newrelic-gradle-compatibility-doc-plugin","newrelic-gradle-verify-instrumentation","newrelic-infinite-tracing-protobuf-java","newrelic-java-agent","newrelic-java-examples","newrelic-jfr-core","newrelic-lambda-tracer-java","newrelic-module-util-java","newrelic-telemetry-sdk-java","newrelic-telemetry-sdk-specs","nri-introspector-java","open-install-library"],
+			"agentrepo": ["newrelic-java-agent"]
+		},
+		{
+			"name": "Go",
+			"team-slug": "go",
+			"repos": ["newrelic-telemetry-sdk-go","go-agent","newrelic-lambda-extension"],
+			"agentrepo": ["go-agent"]
+		},
+		{
+			"name": "PHP",
+			"team-slug": "php",
+			"repos": ["newrelic-php-agent","newrelic-telemetry-sdk-c","newrelic-telemetry-sdk-rust","newrelic-monolog-logenricher-php","newrelic-php-daemon-docker"],
+			"agentrepo": ["newrelic-php-agent"]
+		},
+		{
+			"name": "ELIXIR",
+			"team-slug": "elixir",
+			"repos": [""],
+			"agentrepo": ["elixir_agent"]
 		}
-
 	]
 }
