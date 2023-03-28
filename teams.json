@@ -39,13 +39,13 @@
 		},
 		{
 			"name": "Go",
-			"team-slug": "go",
+			"team-slug": "go-agent",
 			"repos": ["newrelic-telemetry-sdk-go","go-agent","newrelic-lambda-extension"],
 			"agentrepo": ["go-agent"]
 		},
 		{
 			"name": "PHP",
-			"team-slug": "php",
+			"team-slug": "php-agent",
 			"repos": ["newrelic-php-agent","newrelic-telemetry-sdk-c","newrelic-telemetry-sdk-rust","newrelic-monolog-logenricher-php","newrelic-php-daemon-docker"],
 			"agentrepo": ["newrelic-php-agent"]
 		},
