@@ -40,7 +40,7 @@ def getTeamMembers(team):
 
 	return memberlist
 
-def getTeamStats(team,start_date,end_date):
+def getTeamStats(team,start,end):
 	repos = team['repos']
 	print(f"Gathering Team PR Counts for {team['name']}")
 	prcount = 0
@@ -81,7 +81,7 @@ def getTeamStats(team,start_date,end_date):
 						merge_date_str = pr['merged_at']
 						if merge_date_str:
 							merge_date = datetime.strptime(merge_date_str, '%Y-%m-%dT%H:%M:%SZ')
-							if merge_date >= start_date and merge_date < end_date:
+							if merge_date >= start and merge_date < end:
 								contributor = pr['user']['login']
 								if contributor in pr_counts:
 									pr_counts[contributor] += 1
@@ -113,7 +113,5 @@ teams = readConfigJson()
 for team in teams['team']:
 	if (team['name'].upper() != 'ELIXIR'):
 		print(team['name'].upper())
-#		print(team)
-#		getPRsForTeam(team,'2022-01-01','2022-01-01')
-		getTeamStats(team,'2022-01-01','2022-01-01')
+		getTeamStats(team,start_date,end_date)
 		print()	
