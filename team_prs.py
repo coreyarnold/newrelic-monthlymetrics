@@ -9,6 +9,9 @@ from dateutil.relativedelta import relativedelta
 
 token = os.getenv('GITHUB_TOKEN', '...')
 
+start_date = datetime(2022, 7, 1)
+end_date = datetime(2023, 3, 31)
+
 def readConfigJson():
 	# JSON file
 	f = open ('teams.json', "r")
@@ -78,7 +81,7 @@ def getTeamStats(team,start_date,end_date):
 						merge_date_str = pr['merged_at']
 						if merge_date_str:
 							merge_date = datetime.strptime(merge_date_str, '%Y-%m-%dT%H:%M:%SZ')
-							if merge_date >= datetime(2022, 4, 1) and merge_date < datetime(2023, 4, 1):
+							if merge_date >= start_date and merge_date < end_date:
 								contributor = pr['user']['login']
 								if contributor in pr_counts:
 									pr_counts[contributor] += 1
