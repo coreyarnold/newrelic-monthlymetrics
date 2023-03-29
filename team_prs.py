@@ -1,6 +1,4 @@
-import calendar
 import datetime
-import operator
 import requests
 import os
 import json
@@ -38,53 +36,6 @@ def getTeamMembers(team):
 				memberlist.append(m['login'])
 
 	return memberlist
-
-def getPRsForTeam(team,start_date, end_date):
-	repos = team['repos']
-	print(f"Gathering Team PR Counts for {team['name']}")
-	prcount = 0
-	teammembers = getTeamMembers(team)
-	for repo in repos:
-		
-		query_url = f"https://api.github.com/repos/newrelic/{repo}/pulls"
-#is:pr is:closed reason:completed closed:2022-04-01..2023-04-01 
-		page_num = 1
-		while page_num != 0:
-			params = {
-				"state": "closed",
-				"page": page_num
-			}
-			headers = {'Authorization': f'token {token}'}
-			r = requests.get(query_url, headers=headers, params=params)
-			#this has all pull requests. need to filter out ones where the author is on the team
-			prs = r.json()
-
-			# Check the Link header to see if there are more pages of results
-			if 'Link' in r.headers:
-				links = r.headers['Link'].split(', ')
-				for link in links:
-					if 'rel="next"' in link:
-						page_num += 1
-						# Set the next page URL
-#						next_page_url = link.split(';')[0][1:-1]
-						break
-					else:
-						page_num = 0
-			else:
-				page_num = 0
-			#are there more pages?
-			print(r.headers['Link'])
-			if True:
-				page_num += 1
-			prs.sort(key=operator.itemgetter('created_at'),reverse=False)
-			for pr in prs:
-				if pr['user']['login'] in teammembers :
-					print(' found pr in %s from: %s opened %s' % (repo, pr['user']['login'], datetime.strptime(pr['created_at'], '%Y-%m-%dT%H:%M:%SZ')))
-					prcount += 1
-				
-	#			else:
-	#				print(' found pr for a team member: ', pr['user']['login'])
-	print("Open External PRs: ", prcount)
 
 def getTeamStats(team,start_date,end_date):
 	repos = team['repos']
