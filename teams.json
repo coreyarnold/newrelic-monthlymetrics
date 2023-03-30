@@ -54,6 +54,12 @@
 			"team-slug": "elixir",
 			"repos": [""],
 			"agentrepo": ["elixir_agent"]
+		},
+		{
+			"name": "Mobile",
+			"team-slug": "mobile-agents",
+			"repos": ["android-gradle-plugin", "android-test-apps", "mobile-flatbuffer-schemas", "newrelic-android-agent", "newrelic-capacitor-plugin", "newrelic-cordova-plugin", "newrelic-flutter-agent", "newrelic-ios-agent", "newrelic-mobile-cli", "newrelic-ndk-agent", "newrelic-react-native-agent", "newrelic-xamarin-plugin"],
+			"agentrepo": ["newrelic-android-agent", "newrelic-ios-agent"]
 		}
 	]
 }
