@@ -121,12 +121,17 @@ def getPullRequests(username, org_id, start, end):
 
 def getPullRequestsBySearch(username, org_name, start, end):
 	QUERY = """
-	query {
+	query ($after: String){
 		search(
 				query: "author:%s org:%s is:pr merged:%s..%s"
 			type: ISSUE
 			first: 100
+			after: $after
 		) {
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
 			edges {
 				node {
 					... on PullRequest {
@@ -146,7 +151,6 @@ def getPullRequestsBySearch(username, org_name, start, end):
 						}
 					}
 				}
-				cursor
 			}
 		}
 	}
@@ -154,54 +158,67 @@ def getPullRequestsBySearch(username, org_name, start, end):
 
 	full_query = QUERY % (username, org_name, start, end)
 	
-	# Send the GraphQL request to the GitHub API
-	response = requests.post('https://api.github.com/graphql', headers={
-			'Authorization': f'Bearer {TOKEN}',
-			'Content-Type': 'application/json'
-	}, json={'query': full_query})
-	
-	# Check for errors in the response
-	if response.status_code != 200:
-			raise ValueError(f'Request failed with status code {response.status_code}: {response.text}')
-		
-	# Parse the response JSON
-	response_json = json.loads(response.text)
-	
-	#stats[userame] = {'pullRequestCount':'<count>', commits, additions, deletions, files}
-	
+	#user[userame] = {'pullRequestCount':'<count>', commits, additions, deletions, files}
 	user = {}
-	stats = {}
-	for e in response_json['data']['search']['edges']:
-		repository = e['node']['repository']['name']
-#		merge_date = datetime.strptime(e['node']['mergedAt'], '%Y-%m-%dT%H:%M:%SZ')
-		commits = e['node']['commits']['totalCount']
-		additions = e['node']['additions']
-		deletions = e['node']['deletions']
-		files = e['node']['files']['totalCount']
-		cursor = e['node'].get('cursor')
-
-		if repository in stats:
-			s = stats[repository]
-			s['pullRequestCount'] += 1
-			s['commits'] += commits
-			s['files'] += files
-			s['additions'] += additions
-			s['deletions'] += deletions
-			stats[repository] = s
-		else:
-			stats[repository] = 	{'pullRequestCount': 1, 'commits':commits,'files':files,'additions':additions,'deletions':deletions}
+	
+	has_next_page = True
+	after_cursor = None
+	while has_next_page:
+		# Construct the variables for the GraphQL query
+		variables = {}
+		if after_cursor:
+			variables['after'] = after_cursor
+			print(after_cursor)
+		# Send the GraphQL request to the GitHub API
+		response = requests.post('https://api.github.com/graphql', headers={
+				'Authorization': f'Bearer {TOKEN}',
+				'Content-Type': 'application/json'
+		}, json={'query': full_query, 'variables': variables})
 		
-		if username in user:
-			u = user[username]
-			u['pullRequestCount'] += 1
-			u['additions'] += additions
-			u['deletions'] += deletions
-			u['files'] += files
-			u['commits'] += commits
-			u['repos'] = stats
-		else:
-			user[username] = {'pullRequestCount': 1, 'additions': additions, 'deletions': deletions, 'files': files, 'commits': commits, 'repos': stats}
+		# Check for errors in the response
+		if response.status_code != 200:
+				raise ValueError(f'Request failed with status code {response.status_code}: {response.text}')
 			
+		# Parse the response JSON
+		response_json = json.loads(response.text)
+		
+		stats = {}
+		for e in response_json['data']['search']['edges']:
+			repository = e['node']['repository']['name']
+	#		merge_date = datetime.strptime(e['node']['mergedAt'], '%Y-%m-%dT%H:%M:%SZ')
+			commits = e['node']['commits']['totalCount']
+			additions = e['node']['additions']
+			deletions = e['node']['deletions']
+			files = e['node']['files']['totalCount']
+			cursor = e['node'].get('cursor')
+	
+			if repository in stats:
+				s = stats[repository]
+				s['pullRequestCount'] += 1
+				s['commits'] += commits
+				s['files'] += files
+				s['additions'] += additions
+				s['deletions'] += deletions
+				stats[repository] = s
+			else:
+				stats[repository] = 	{'pullRequestCount': 1, 'commits':commits,'files':files,'additions':additions,'deletions':deletions}
+			
+			if username in user:
+				u = user[username]
+				u['pullRequestCount'] += 1
+				u['additions'] += additions
+				u['deletions'] += deletions
+				u['files'] += files
+				u['commits'] += commits
+				u['repos'] = stats
+			else:
+				user[username] = {'pullRequestCount': 1, 'additions': additions, 'deletions': deletions, 'files': files, 'commits': commits, 'repos': stats}
+		
+				#		print(response_json)
+		has_next_page = response_json['data']['search']['pageInfo']['hasNextPage']
+		print (has_next_page)
+		after_cursor = "Y3Vyc29yOjEwMA=="#response_json['data']['search']['pageInfo']['endCursor']
+		#{'data': {'search': {'pageInfo': {'hasNextPage': False, 'endCursor': 'Y3Vyc29yOjUy'}		
 	
 	print(f'{username}: PRs:' + str({user[username]['pullRequestCount']}))
 	return user
@@ -216,6 +233,6 @@ USERS = ['coreyarnold']
 
 for team_member in USERS:
 	ORGANIZATION_ID = ORGANIZATIONS['newrelic']
-	getPullRequests(team_member, ORGANIZATION_ID, start_date, end_date)
-	getReviews(team_member, ORGANIZATION_ID, start_date, end_date)
+#	getPullRequests(team_member, ORGANIZATION_ID, start_date, end_date)
+#	getReviews(team_member, ORGANIZATION_ID, start_date, end_date)
 	getPullRequestsBySearch(team_member, list(ORGANIZATIONS.keys())[0], start_date, end_date)
