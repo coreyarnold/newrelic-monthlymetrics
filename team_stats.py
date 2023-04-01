@@ -3,6 +3,8 @@
 import os
 import requests
 import json
+from pprint import pprint
+from datetime import datetime
 
 # Your GitHub personal access token
 TOKEN = 'YOUR_PERSONAL_ACCESS_TOKEN'
@@ -14,7 +16,7 @@ ORGANIZATIONS['newrelic'] = 'O_kgDNe_s'
 start_date = '2022-07-01'
 end_date = '2023-03-31'
 
-def getReviews(username,org_id):
+def getReviews(username,org_id, start_date, end_date):
 	
 	# The GraphQL query to retrieve the reviews
 	QUERY = """
@@ -158,7 +160,51 @@ def getPullRequestsBySearch(username, org_name, start, end):
 		
 	# Parse the response JSON
 	response_json = json.loads(response.text)
-	print(response_json)
+	
+	#stats[userame] = {'pullRequestCount':'<count>', commits, additions, deletions, files}
+	
+	user = {}
+	stats = {}
+	for e in response_json['data']['search']['edges']:
+		repository = e['node']['repository']['name']
+		merge_date = datetime.strptime(e['node']['mergedAt'], '%Y-%m-%dT%H:%M:%SZ')
+		if datetime.strptime(start, '%Y-%m-%d') <= merge_date <= datetime.strptime(end, '%Y-%m-%d'):
+			print('yep')
+		else:
+			print('nope')
+		commits = e['node']['commits']['totalCount']
+		additions = e['node']['additions']
+		deletions = e['node']['deletions']
+		files = e['node']['files']['totalCount']
+		cursor = e['node'].get('cursor')
+
+		if repository in stats:
+			s = stats[repository]
+			s['pullRequestCount'] += 1
+			s['commits'] += commits
+			s['files'] += files
+			s['additions'] += additions
+			s['deletions'] += deletions
+			stats[repository] = s
+		else:
+			stats[repository] = 	{'pullRequestCount': 1, 'commits':commits,'files':files,'additions':additions,'deletions':deletions}
+		
+		if username in user:
+			u = user[username]
+			u['pullRequestCount'] += 1
+			u['additions'] += additions
+			u['deletions'] += deletions
+			u['files'] += files
+			u['commits'] += commits
+			u['repos'] = stats
+		else:
+			user[username] = {'pullRequestCount': 1, 'additions': additions, 'deletions': deletions, 'files': files, 'commits': commits, 'repos': stats}
+			
+	print(user)
+
+#{'url': 'https://github.com/newrelic/docs-website/pull/8941', 'mergedAt': '2022-08-22T15:48:28Z', 'commits': {'totalCount': 1}, 'additions': 14, 'deletions': 14, 'merged': True, 'repository': {'name': 'docs-website'}, 'files': {'totalCount': 1}}
+
+
 
 
 # The list of usernames to retrieve pull request reviews for
@@ -167,5 +213,5 @@ USERS = ['coreyarnold']
 for team_mamber in USERS:
 	ORGANIZATION_ID = ORGANIZATIONS['newrelic']
 	getPullRequests(team_mamber, ORGANIZATION_ID, start_date, end_date)
-	getReviews(team_mamber, ORGANIZATION_ID)
+	getReviews(team_mamber, ORGANIZATION_ID, start_date, end_date)
 	getPullRequestsBySearch(team_mamber, list(ORGANIZATIONS.keys())[0], start_date, end_date)
