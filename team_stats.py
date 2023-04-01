@@ -61,7 +61,8 @@ def getReviews(username,org_id, start_date, end_date):
 		
 	# Parse the response JSON
 	response_json = json.loads(response.text)
-	print(response_json)
+	
+	return response_json
 
 def getPullRequests(username, org_id, start, end):
 	# The GraphQL query to retrieve the pull requests
@@ -111,7 +112,12 @@ def getPullRequests(username, org_id, start, end):
 		
 	# Parse the response JSON
 	response_json = json.loads(response.text)
-	print(response_json)
+#	if datetime.strptime(start, '%Y-%m-%d') <= merge_date <= datetime.strptime(end, '%Y-%m-%d'):
+#		print('yep')
+#	else:
+#		print('nope')
+	
+	return response_json
 
 def getPullRequestsBySearch(username, org_name, start, end):
 	QUERY = """
@@ -167,11 +173,7 @@ def getPullRequestsBySearch(username, org_name, start, end):
 	stats = {}
 	for e in response_json['data']['search']['edges']:
 		repository = e['node']['repository']['name']
-		merge_date = datetime.strptime(e['node']['mergedAt'], '%Y-%m-%dT%H:%M:%SZ')
-		if datetime.strptime(start, '%Y-%m-%d') <= merge_date <= datetime.strptime(end, '%Y-%m-%d'):
-			print('yep')
-		else:
-			print('nope')
+#		merge_date = datetime.strptime(e['node']['mergedAt'], '%Y-%m-%dT%H:%M:%SZ')
 		commits = e['node']['commits']['totalCount']
 		additions = e['node']['additions']
 		deletions = e['node']['deletions']
@@ -200,7 +202,9 @@ def getPullRequestsBySearch(username, org_name, start, end):
 		else:
 			user[username] = {'pullRequestCount': 1, 'additions': additions, 'deletions': deletions, 'files': files, 'commits': commits, 'repos': stats}
 			
-	print(user)
+	
+	print(f'{username}: PRs:' + str({user[username]['pullRequestCount']}))
+	return user
 
 #{'url': 'https://github.com/newrelic/docs-website/pull/8941', 'mergedAt': '2022-08-22T15:48:28Z', 'commits': {'totalCount': 1}, 'additions': 14, 'deletions': 14, 'merged': True, 'repository': {'name': 'docs-website'}, 'files': {'totalCount': 1}}
 
@@ -210,8 +214,8 @@ def getPullRequestsBySearch(username, org_name, start, end):
 # The list of usernames to retrieve pull request reviews for
 USERS = ['coreyarnold']
 
-for team_mamber in USERS:
+for team_member in USERS:
 	ORGANIZATION_ID = ORGANIZATIONS['newrelic']
-	getPullRequests(team_mamber, ORGANIZATION_ID, start_date, end_date)
-	getReviews(team_mamber, ORGANIZATION_ID, start_date, end_date)
-	getPullRequestsBySearch(team_mamber, list(ORGANIZATIONS.keys())[0], start_date, end_date)
+	getPullRequests(team_member, ORGANIZATION_ID, start_date, end_date)
+	getReviews(team_member, ORGANIZATION_ID, start_date, end_date)
+	getPullRequestsBySearch(team_member, list(ORGANIZATIONS.keys())[0], start_date, end_date)
