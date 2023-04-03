@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 token = os.getenv('GITHUB_TOKEN', '...')
 
-start_date = datetime(2022, 7, 1)
+start_date = datetime(2022, 1, 1)
 end_date = datetime(2023, 3, 31)
 
 def readConfigJson():
@@ -106,8 +106,6 @@ def getTeamStats(team,start,end):
 	# Print the count of pull requests per contributor
 	print(pr_counts)
 	
-
-
 teams = readConfigJson()
 
 for team in teams['team']:
