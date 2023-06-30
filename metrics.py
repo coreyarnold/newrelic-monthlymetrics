@@ -116,7 +116,6 @@ def getReleaseNumbers(repos):
 		}
 		headers = {'Authorization': f'token {token}'}
 		r = requests.get(query_url, headers=headers, params=params)
-		#this has all pull requests. need to filter out ones where the author is on the team
 		releases = r.json()
 		#Remove any unpublished releases since can't sort them when 'published_at' is None
 		for release in releases:
