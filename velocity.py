@@ -185,14 +185,15 @@ def getReleasesByTeam(team_obj):
 			for release in releases:
 				releasepublishedat = datetime.strptime(release['published_at'], '%Y-%m-%dT%H:%M:%SZ')
 				if (releasepublishedat >= since and releasepublishedat <= until):
-#					print(" Release %s published (%s) in %s" % (release.get("name"), releasepublishedat, repo))
+					print(" Release %s published (%s) in %s" % (release.get("name"), releasepublishedat, repo))
 					reporeleasecount += 1
 					
 			totalreleasecount += reporeleasecount
-		print("%s - Total Release Count: %s" % (until.strftime("%m/%d/%Y, %H:%M:%S"), totalreleasecount))
+		print("%s - Total Release Count: %s" % (until.strftime("%m/%d/%Y"), totalreleasecount))
 		
 		since = since + relativedelta(days=+7)
 		until = since + relativedelta(days=+7)
+		totalreleasecount = 0
 
 # The list of usernames to retrieve pull request reviews for
 #USERS = ['newrelic-node-agent-team']
